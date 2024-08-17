@@ -1,4 +1,4 @@
-package com.hiusahald.shop_online.entities;
+package com.hiusahald.shop_online.entities.product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

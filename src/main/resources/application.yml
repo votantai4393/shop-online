@@ -1,18 +1,30 @@
 spring:
+  application:
+    name: shop-online
+    authentication:
+      jwt:
+        secret-key: ERF33DFGGE656ADBJ534T
+        expiration: 900000
   datasource:
-    url: jdbc:h2:mem:test_db
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
+     url: jdbc:postgresql://localhost:5432/shop_online_test
+     username: postgres
+     password: hiusahald
+     driver-class-name: org.postgresql.Driver
   jpa:
+    open-in-view: false
+    database: postgresql
     hibernate:
       ddl-auto: update
     show-sql: true
-  application:
-    name: shop-online
   output:
     ansi:
       enabled: always
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hiusahald@gmail.com
+    password: spbi igbe sduc goue
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+    from: hiusahald@gmail.com

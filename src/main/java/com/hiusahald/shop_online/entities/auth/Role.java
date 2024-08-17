@@ -1,17 +1,17 @@
-package com.hiusahald.shop_online.entities;
+package com.hiusahald.shop_online.entities.auth;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Set;
 
+@Entity
+@Table(name = "roles")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-@Entity
-@Table(name = "roles")
 public class Role {
 
     @Id

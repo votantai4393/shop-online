@@ -1,4 +1,4 @@
-package com.hiusahald.shop_online.entities;
+package com.hiusahald.shop_online.entities.auth;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,17 +12,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "users")
 public class User implements UserDetails, Principal {
 
     @Id
@@ -37,11 +38,15 @@ public class User implements UserDetails, Principal {
     private String phoneNumber;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            name = "userRoles",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "roleId")
     )
     private Set<Role> roles;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Address> addresses;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Token> tokens;
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
