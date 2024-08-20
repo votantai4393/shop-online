@@ -1,19 +1,14 @@
 spring:
-  application:
-    name: shop-online
-    authentication:
-      jwt:
-        secret-key: ERF33DFGGE656ADBJ534T
-        expiration: 900000
   datasource:
-     url: jdbc:postgresql://localhost:5432/shop_online_test
-     username: postgres
-     password: hiusahald
-     driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/shop_online
+    username: postgres
+    password: hiusahald
+    driver-class-name: org.postgresql.Driver
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
     hibernate:
       ddl-auto: update
-    show-sql: true
   output:
     ansi:
       enabled: always
@@ -23,9 +18,11 @@ spring:
     username: hiusahald@gmail.com
     password: spbi igbe sduc goue
     properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
-    from: hiusahald@gmail.com
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   servlet:
     multipart:
       max-file-size: 5MB
@@ -33,6 +30,13 @@ spring:
 
 server:
   servlet:
-    context-path: /api/v1/
-  port: 98988
+    context-path: /api/v1
+  port: 270704
 
+app:
+  mailing:
+    from: hiusahald@gmail.com
+  security:
+    jwt:
+      expiration: 86400000
+      secret-key: dsfdthst435465uytr3r254thrgrsefw345fgds587993dg
