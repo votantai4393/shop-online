@@ -11,8 +11,6 @@ spring:
      password: hiusahald
      driver-class-name: org.postgresql.Driver
   jpa:
-    open-in-view: false
-    database: postgresql
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -28,3 +26,13 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
     from: hiusahald@gmail.com
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+server:
+  servlet:
+    context-path: /api/v1/
+  port: 98988
+
