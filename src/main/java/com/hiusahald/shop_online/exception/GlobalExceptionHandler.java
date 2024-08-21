@@ -1,8 +1,8 @@
 package com.hiusahald.shop_online.exception;
 
-import com.hiusahald.shop_online.exception.exception.ClientRequestException;
-import com.hiusahald.shop_online.exception.exception.ResentEmailException;
-import com.hiusahald.shop_online.exception.exception.UserExistedException;
+import com.hiusahald.shop_online.exception.exceptions.ClientRequestException;
+import com.hiusahald.shop_online.exception.exceptions.ResentEmailException;
+import com.hiusahald.shop_online.exception.exceptions.UserExistedException;
 import jakarta.mail.MessagingException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;

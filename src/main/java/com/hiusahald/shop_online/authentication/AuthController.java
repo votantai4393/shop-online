@@ -1,5 +1,6 @@
 package com.hiusahald.shop_online.authentication;
 
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody @Valid SignupForm form) {
-        try {
-            authService.signup(form);
-        } catch (jakarta.mail.MessagingException e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<?> signup(@RequestBody @Valid SignupForm form) throws MessagingException {
+        authService.signup(form);
         return ResponseEntity.accepted().build();
     }
 
@@ -30,12 +27,8 @@ public class AuthController {
     }
 
     @PostMapping("/activate-account")
-    public ResponseEntity<?> activateAccount(@RequestParam String token) {
-        try {
-            authService.activateAccount(token);
-        } catch (jakarta.mail.MessagingException e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<?> activateAccount(@RequestParam String token) throws MessagingException {
+        authService.activateAccount(token);
         return ResponseEntity.accepted().build();
     }
 }

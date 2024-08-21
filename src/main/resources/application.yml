@@ -36,6 +36,8 @@ server:
 app:
   mailing:
     from: hiusahald@gmail.com
+    url:
+      activate-account: localhost:3000/activate-account
   security:
     jwt:
       expiration: 86400000

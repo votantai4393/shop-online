@@ -24,11 +24,6 @@ public record SignupForm(
         @NotBlank(message = "Confirm password is required!")
         @Size(min = 6, max = 20, message = "Confirm password must be between 6 and 20 characters!")
         String confirmPassword
-) {
-    public SignupForm {
-        if (!password.equals(confirmPassword)) {
-            throw new IllegalArgumentException("Password and confirm password do not match!");
-        }
-    }
 
+) {
 }

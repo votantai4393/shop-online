@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class EmailServiceImpl implements EMailService {
+public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
@@ -25,7 +25,7 @@ public class EmailServiceImpl implements EMailService {
 
     @Override
     public void send(String recipient, EmailTemplate template,
-            EMailTemplateProperties props) throws MessagingException {
+            EmailTemplateProperties props) throws MessagingException {
         var mimeMessage = javaMailSender.createMimeMessage();
         var mimeMessageHelper = new MimeMessageHelper(
                 mimeMessage,
@@ -39,18 +39,18 @@ public class EmailServiceImpl implements EMailService {
         javaMailSender.send(mimeMessage);
     }
 
-    private String getContent(EmailTemplate template, EMailTemplateProperties props) {
+    private String getContent(EmailTemplate template, EmailTemplateProperties props) {
         var context = new Context();
         context.setVariables(getProperties(template, props));
         return templateEngine.process(template.getTemplate(), context);
     }
 
-    private Map<String, Object> getProperties(EmailTemplate template, EMailTemplateProperties props) {
+    private Map<String, Object> getProperties(EmailTemplate template, EmailTemplateProperties props) {
         return switch (template) {
             case ACTIVATE_ACCOUNT -> Map.of(
                     "url", props.url(),
                     "username", props.username(),
-                    "code", props.code()
+                    "token", props.token()
             );
             case RESET_PASSWORD -> Map.of(
                     "url", props.url(),

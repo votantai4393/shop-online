@@ -4,9 +4,9 @@ import jakarta.mail.MessagingException;
 import org.springframework.scheduling.annotation.Async;
 
 @Async
-public interface EMailService {
+public interface EmailService {
 
     void send(String recipient, EmailTemplate template,
-            EMailTemplateProperties properties) throws MessagingException;
+            EmailTemplateProperties properties) throws MessagingException;
 
 }

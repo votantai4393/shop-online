@@ -1,9 +1,12 @@
 package com.hiusahald.shop_online.mail;
 
-public record EMailTemplateProperties(
+import lombok.Builder;
+
+@Builder
+public record EmailTemplateProperties(
         String url,
         String username,
-        String code,
+        String token,
         String newPassword
 ) {
 }

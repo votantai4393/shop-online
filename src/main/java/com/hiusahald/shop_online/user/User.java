@@ -50,23 +50,33 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokens;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.getRoles()
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
                 .toList();
     }
 
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    @Transient
+    public String getFullName() {
+        return getLastname() + " " + getFirstname();
     }
 
 }
