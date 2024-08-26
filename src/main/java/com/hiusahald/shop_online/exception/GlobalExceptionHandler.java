@@ -1,6 +1,7 @@
 package com.hiusahald.shop_online.exception;
 
 import com.hiusahald.shop_online.exception.exceptions.ClientRequestException;
+import com.hiusahald.shop_online.exception.exceptions.PasswordNotMatchException;
 import com.hiusahald.shop_online.exception.exceptions.ResentEmailException;
 import com.hiusahald.shop_online.exception.exceptions.UserExistedException;
 import jakarta.mail.MessagingException;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.hiusahald.shop_online.exception.BusinessError.*;
+import static com.hiusahald.shop_online.constants.BusinessError.*;
 
 import java.util.stream.Collectors;
 
@@ -21,7 +22,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handler(ClientRequestException e) {
         return ResponseEntity.badRequest().body(
                 ExceptionResponse.builder()
-                        .messageError(e.getMessage())
+                        .error(e.getMessage())
                         .build()
         );
     }
@@ -33,7 +34,7 @@ public class GlobalExceptionHandler {
                 .body(
                         ExceptionResponse.builder()
                                 .businessMessage(RESEND_EMAIL.getMessage())
-                                .messageError(e.getMessage())
+                                .error(e.getMessage())
                                 .build()
                 );
     }
@@ -45,7 +46,19 @@ public class GlobalExceptionHandler {
                 .body(
                         ExceptionResponse.builder()
                                 .businessMessage(USER_EXISTED.getMessage())
-                                .messageError(e.getMessage())
+                                .error(e.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(PasswordNotMatchException.class)
+    public ResponseEntity<ExceptionResponse> handler(PasswordNotMatchException e) {
+        return ResponseEntity
+                .status(PASSWORD_NOT_MATCH.getCode())
+                .body(
+                        ExceptionResponse.builder()
+                                .businessMessage(PASSWORD_NOT_MATCH.getMessage())
+                                .error(e.getMessage())
                                 .build()
                 );
     }
@@ -70,7 +83,7 @@ public class GlobalExceptionHandler {
                 .body(
                         ExceptionResponse.builder()
                                 .businessCode(ERROR_SERVER.getCode())
-                                .messageError(e.getMessage())
+                                .error(e.getMessage())
                                 .build()
                 );
     }
@@ -83,7 +96,7 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .businessCode(ERROR_SERVER.getCode())
                                 .businessMessage(ERROR_SERVER.getMessage())
-                                .messageError(e.getMessage())
+                                .error(e.getMessage())
                                 .build()
                 );
     }

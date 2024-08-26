@@ -1,12 +1,12 @@
-package com.hiusahald.shop_online.mail;
+package com.hiusahald.shop_online.email;
 
 import lombok.Builder;
 
 @Builder
-public record EmailTemplateProperties(
+public record EmailProperties(
         String url,
         String username,
-        String token,
+        String code,
         String newPassword
 ) {
 }

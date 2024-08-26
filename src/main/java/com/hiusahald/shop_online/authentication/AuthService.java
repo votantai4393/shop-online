@@ -4,10 +4,10 @@ import jakarta.mail.MessagingException;
 
 public interface AuthService {
 
-    void signup(SignupForm form) throws MessagingException;
+    void signup(SignupForm form);
 
     AuthResponse login(LoginForm form);
 
-    void activateAccount(String token) throws MessagingException;
+    void activateAccount(String token);
 
 }

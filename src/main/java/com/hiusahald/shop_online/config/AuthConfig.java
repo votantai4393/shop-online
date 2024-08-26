@@ -1,6 +1,6 @@
-package com.hiusahald.shop_online.authentication;
+package com.hiusahald.shop_online.config;
 
-import com.hiusahald.shop_online.user.UserRepository;
+import com.hiusahald.shop_online.shop.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

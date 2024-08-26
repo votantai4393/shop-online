@@ -1,11 +1,10 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/shop_online
+    url: jdbc:postgresql://localhost:5432/test_db_aaa
     username: postgres
     password: hiusahald
     driver-class-name: org.postgresql.Driver
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: postgresql
     hibernate:
       ddl-auto: update
@@ -25,15 +24,23 @@ spring:
             enable: true
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 server:
   servlet:
     context-path: /api/v1
-  port: 270704
+  port: 8081
 
 app:
+  storage:
+    cloudinary:
+      cloud-name: dvlnioxyc
+      api-key: 599956947274682
+      api-secret: Dtgb65pFAagi47mnc_Llbb7MafQ
+      cloud-url: cloudinary://599956947274682:Dtgb65pFAagi47mnc_Llbb7MafQ@dvlnioxyc
+      connection-timeout: 5000
+      buffer-length: 1024
   mailing:
     from: hiusahald@gmail.com
     url:

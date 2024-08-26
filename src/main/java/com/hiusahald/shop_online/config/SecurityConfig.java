@@ -1,5 +1,7 @@
-package com.hiusahald.shop_online.security;
+package com.hiusahald.shop_online.config;
 
+import com.hiusahald.shop_online.jwt.JwtFilter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,16 +23,16 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(@NonNull HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         registry -> registry.requestMatchers("/auth/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
-                ).csrf(Customizer.withDefaults())
-                .cors(AbstractHttpConfigurer::disable)
-                .authenticationProvider(authenticationProvider)
+                ).authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(
                         config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

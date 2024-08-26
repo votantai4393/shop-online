@@ -14,21 +14,21 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody @Valid SignupForm form) throws MessagingException {
+    public ResponseEntity<?> signup(@RequestBody @Valid SignupForm form) {
         authService.signup(form);
         return ResponseEntity.accepted().build();
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginForm form) {
-        return ResponseEntity.ok(
-                authService.login(form)
-        );
+        AuthResponse response = authService.login(form);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/activate-account")
-    public ResponseEntity<?> activateAccount(@RequestParam String token) throws MessagingException {
+    public ResponseEntity<?> activateAccount(@PathVariable String token) {
         authService.activateAccount(token);
         return ResponseEntity.accepted().build();
     }
+
 }

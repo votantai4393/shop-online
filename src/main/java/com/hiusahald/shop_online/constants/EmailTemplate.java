@@ -1,4 +1,4 @@
-package com.hiusahald.shop_online.mail;
+package com.hiusahald.shop_online.constants;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

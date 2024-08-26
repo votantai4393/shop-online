@@ -1,4 +1,4 @@
-package com.hiusahald.shop_online.user;
+package com.hiusahald.shop_online.shop.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.hiusahald.shop_online.user.token;
+package com.hiusahald.shop_online.shop.user.token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

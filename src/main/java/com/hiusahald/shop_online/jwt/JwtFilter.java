@@ -1,6 +1,5 @@
-package com.hiusahald.shop_online.security;
+package com.hiusahald.shop_online.jwt;
 
-import com.hiusahald.shop_online.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +20,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
+    private final JwtService jwtService;
 
     @Override
     protected void doFilterInternal(
@@ -34,20 +34,22 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
         final var jwt = authHeader.substring(7);
-        final var username = JwtUtil.getUsername(jwt);
+        final var username = jwtService.getUsername(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             var userDetails = userDetailsService.loadUserByUsername(username);
-            if (JwtUtil.isTokenValid(jwt, userDetails)) {
+            if (jwtService.isTokenValid(jwt, userDetails)) {
                 var authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
                 );
                 authToken.setDetails(
-                        new WebAuthenticationDetailsSource()
-                                .buildDetails(request)
+                        new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
         filterChain.doFilter(request, response);
     }
+
 }
