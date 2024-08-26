@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate Your Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            text-align: left;
+        }
+        .content h2 {
+            color: #333333;
+            font-size: 20px;
+        }
+        .content p {
+            color: #666666;
+            line-height: 1.6;
+        }
+        .content a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            color: white;
+            background-color: #28a745;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            color: #999999;
+            font-size: 12px;
+            border-top: 1px solid #dddddd;
+            margin-top: 20px;
+        }
+        .code {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+
+<div class="email-container">
+    <div class="header">
+        <h1>Welcome to MEMO store!</h1>
+    </div>
+
+    <div class="content">
+        <h2>Activate Your Account</h2>
+        <p>Hi <span th:text="${username}">my friend</span>!</p>
+        <p>Thank you for registering with us! To complete your registration,
+            please check the token and click the button below to activate your account:</p>
+        <h2 class="code" th:text="${token}">Something went wrong</h2>
+        <a th:href="${url}" target="_blank">Activate My Account</a>
+        <p >If you didn't create an account using this email address, please ignore this email.</p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 MEMO. All rights reserved.</p>
+    </div>
+</div>
+
+</body>
+</html>

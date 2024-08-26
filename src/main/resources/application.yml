@@ -1,13 +1,15 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/test_db_aaa
+    url: jdbc:postgresql://localhost:5432/shop_app_test_v1
     username: postgres
     password: hiusahald
     driver-class-name: org.postgresql.Driver
   jpa:
-    database: postgresql
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   output:
     ansi:
       enabled: always
@@ -30,7 +32,7 @@ spring:
 server:
   servlet:
     context-path: /api/v1
-  port: 8081
+  port: 9000
 
 app:
   storage:
@@ -43,9 +45,15 @@ app:
       buffer-length: 1024
   mailing:
     from: hiusahald@gmail.com
-    url:
-      activate-account: localhost:3000/activate-account
+    activate-account:
+      redirect-url: localhost:3000/activate-account
+      token-length: 6
+      token-expiration: 900000
   security:
     jwt:
       expiration: 86400000
       secret-key: dsfdthst435465uytr3r254thrgrsefw345fgds587993dg
+  frontend:
+    origin: http://localhost:3000
+  backend:
+    origin: http://localhost:9000
