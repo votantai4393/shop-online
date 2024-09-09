@@ -16,7 +16,12 @@ public class AuthenticationController {
 
     private final AuthenticationService authService;
 
-    @PostMapping("/signup")
+    @GetMapping
+    public ResponseEntity<?> testApi() {
+        return ResponseEntity.accepted().body("Hello world");
+    }
+
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterForm form) {
         authService.register(form);
         return ResponseEntity.accepted().build();

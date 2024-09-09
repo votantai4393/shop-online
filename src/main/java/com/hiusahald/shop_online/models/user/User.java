@@ -24,16 +24,19 @@ import java.util.stream.Collectors;
 @SuperBuilder
 public class User extends BaseEntity implements UserDetails {
 
+    @Column(nullable = false)
     private String firstname;
 
+    @Column(nullable = false)
     private String lastname;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(unique = true)
     private String phoneNumber;
 
+    @Column(nullable = false)
     private String password;
 
     private boolean enabled;

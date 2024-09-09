@@ -24,9 +24,9 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedHeaders(getHeaders());
-        config.setAllowedMethods(getMethods());
-        config.setAllowedOrigins(getOrigins());
+        config.setAllowedHeaders(this.getHeaders());
+        config.setAllowedMethods(this.getMethods());
+        config.setAllowedOrigins(this.getOrigins());
         config.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
@@ -37,7 +37,6 @@ public class CorsConfig {
                 HttpHeaders.ORIGIN,
                 HttpHeaders.CONTENT_TYPE,
                 HttpHeaders.AUTHORIZATION,
-                HttpHeaders.DATE,
                 HttpHeaders.ACCEPT
         );
     }
@@ -47,7 +46,6 @@ public class CorsConfig {
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.PUT.name(),
-                HttpMethod.PATCH.name(),
                 HttpMethod.DELETE.name()
         );
     }

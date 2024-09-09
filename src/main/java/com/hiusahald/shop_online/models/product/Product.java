@@ -18,20 +18,23 @@ import java.util.Set;
 @SuperBuilder
 public class Product extends BaseEntity {
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private Double price;
 
+    @Column(nullable = false)
     private Integer inventory;
 
     private String description;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "thumbnailId")
+    @JoinColumn(name = "thumbnailId", nullable = false)
     private Image thumbnail;
 
     @ManyToOne
-    @JoinColumn(name = "categoryId")
+    @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

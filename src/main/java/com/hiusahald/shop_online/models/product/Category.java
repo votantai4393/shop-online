@@ -16,7 +16,7 @@ import java.util.Set;
 @SuperBuilder
 public class Category extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)

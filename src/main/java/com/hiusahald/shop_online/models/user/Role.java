@@ -21,7 +21,7 @@ import java.util.Set;
 @SuperBuilder
 public class Role extends BaseEntity {
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "roles")

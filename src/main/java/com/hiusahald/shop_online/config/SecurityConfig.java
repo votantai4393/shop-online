@@ -3,6 +3,7 @@ package com.hiusahald.shop_online.config;
 import com.hiusahald.shop_online.constants.ROLE;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -29,17 +30,24 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        registry -> registry.requestMatchers("/auth/**")
-                                .permitAll()
-                                .requestMatchers("/admin/**")
-                                .hasAuthority(ROLE.ADMIN.name())
-                                .anyRequest()
-                                .authenticated()
+                        registry ->
+                                registry.requestMatchers("/auth/**")
+                                        .permitAll()
+                                        .requestMatchers(
+                                                "/users/admin/**",
+                                                "/products/admin/**",
+                                                "/categories/admin/**",
+                                                "/cart/admin/**",
+                                                "/orders/admin/**",
+                                                "/payment/admin/**"
+                                        ).hasAuthority(ROLE.ADMIN.name())
+                                        .anyRequest()
+                                        .authenticated()
                 ).authenticationProvider(this.authenticationProvider)
                 .sessionManagement(
                         config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                ).addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                ).addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class
+                ).build();
     }
 
 }

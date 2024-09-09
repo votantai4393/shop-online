@@ -16,21 +16,24 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Payment extends BaseEntity {
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String transactionId;
 
+    @Column(nullable = false)
     private Double amount;
 
+    @Column(nullable = false)
     private String method;
 
+    @Column(nullable = false)
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "orderId")
+    @JoinColumn(name = "orderId", nullable = false)
     private Order order;
 
 }

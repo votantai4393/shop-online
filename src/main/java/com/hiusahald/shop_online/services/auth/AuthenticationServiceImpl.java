@@ -1,9 +1,10 @@
 package com.hiusahald.shop_online.services.auth;
 
 import com.hiusahald.shop_online.constants.EmailTemplate;
+import com.hiusahald.shop_online.constants.ROLE;
 import com.hiusahald.shop_online.dto.request.LoginForm;
 import com.hiusahald.shop_online.dto.request.RegisterForm;
-import com.hiusahald.shop_online.exceptions.ResourceNotFoundException;
+import com.hiusahald.shop_online.exceptions.*;
 import com.hiusahald.shop_online.models.user.Role;
 import com.hiusahald.shop_online.models.user.Token;
 import com.hiusahald.shop_online.models.user.User;
@@ -25,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -49,26 +52,48 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public void register(@NonNull RegisterForm form) {
-        Role role = this.roleRepository.findByName("USER_ROLE")
-                .orElseThrow(() -> new ResourceNotFoundException("Role not found!"));
-        User user = User.builder()
-                .email(form.email())
-                .password(passwordEncoder.encode(form.password()))
-                .firstname(form.firstname())
-                .lastname(form.lastname())
-                .roles(Set.of(role))
-                .build();
-        user = this.userRepository.save(user);
-        sendActivateEmail(user);
+        Optional<User> existedUser = this.userRepository.findByEmail(form.email());
+        if (existedUser.isEmpty()) {
+            Role role = this.roleRepository.findByName(ROLE.USER.name())
+                    .orElseGet(
+                            () -> {
+                                Role userRole = Role.builder()
+                                        .name(ROLE.USER.name())
+                                        .build();
+                                return this.roleRepository.save(userRole);
+                            }
+                    );
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+            String encoded = this.passwordEncoder.encode(form.password());
+            User newUser = User.builder()
+                    .email(form.email())
+                    .password(encoded)
+                    .firstname(form.firstname())
+                    .lastname(form.lastname())
+                    .roles(roles)
+                    .build();
+            newUser = this.userRepository.save(newUser);
+            sendActivateEmail(newUser);
+            return;
+        }
+        existedUser.map(user -> {
+            if (!user.isEnabled()) {
+                throw new AccountExistedException("Account existed!");
+            }
+            throw new AccountUnverifiedException("Account is waiting to activate!");
+        });
     }
 
     @Override
     public AuthenticationResponse authenticate(@NonNull LoginForm form) {
-        Authentication auth = this.authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(form.email(), form.password())
-        );
+        UsernamePasswordAuthenticationToken token =
+                new UsernamePasswordAuthenticationToken(form.email(), form.password());
+        Authentication auth = this.authManager.authenticate(token);
+        User user = (User) auth.getPrincipal();
+        String jwt = this.jwtService.generateToken(user);
         return AuthenticationResponse.builder()
-                .token(jwtService.generateToken((User) auth.getPrincipal()))
+                .token(jwt)
                 .build();
     }
 
@@ -76,9 +101,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional
     public void activateAccount(String code) {
         Token token = this.tokenRepository.findByCode(code)
-                .orElseThrow(() -> new ResourceNotFoundException("Token not found!"));
+                .orElseThrow(() -> new IncorrectTokenException("Token not found! | Token: " + code));
         User user = token.getUser();
         if (user.isEnabled()) {
+            throw new TokenActivatedExeption("Token hash been activated!");
+        }
+        if (token.isExpires()) {
+            this.sendActivateEmail(user);
+            throw new TokenExpiredException("Token has been expired, a new email has been sent!");
         }
         token.setValidatedAt(LocalDateTime.now());
         user.setEnabled(true);
@@ -86,22 +116,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private void sendActivateEmail(@NonNull User user) {
+        String code = saveCode(user, this.tokenLength, this.tokenExpiration);
         this.emailService.send(
                 user.getEmail(),
                 EmailTemplate.ACTIVATE_ACCOUNT,
                 EmailProperties.builder()
                         .url(this.redirectUrl)
-                        .code(saveCode(user, this.tokenLength, this.tokenExpiration))
+                        .code(code)
                         .username(user.getFullName())
                         .build()
         );
     }
 
     private String saveCode(User user, int length, long expiration) {
-        long milliSecondToMinutes = expiration / (60 * 1000);
-        LocalDateTime expires = LocalDateTime.now().plusMinutes(milliSecondToMinutes);
+        long millisecondsToMinutes = expiration / (60 * 1000);
+        LocalDateTime expires = LocalDateTime.now().plusMinutes(millisecondsToMinutes);
+        String code = CommonUtil.generateCode(length);
         Token token = Token.builder()
-                .code(CommonUtil.generateCode(length))
+                .code(code)
                 .user(user)
                 .expiresAt(expires)
                 .build();

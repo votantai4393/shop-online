@@ -22,19 +22,11 @@ public abstract class BaseEntity {
     private Long id;
 
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.setCreatedAt(LocalDateTime.now());
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.setUpdatedAt(LocalDateTime.now());
-    }
 
 }

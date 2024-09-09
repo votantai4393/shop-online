@@ -1,12 +1,7 @@
 package com.hiusahald.shop_online.util;
 
-import com.hiusahald.shop_online.constants.ROLE;
-import com.hiusahald.shop_online.exceptions.AuthorizationException;
-import com.hiusahald.shop_online.models.user.User;
 import com.hiusahald.shop_online.dto.response.PageResponse;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.security.SecureRandom;
 import java.util.List;

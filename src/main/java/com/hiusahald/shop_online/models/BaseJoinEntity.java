@@ -17,22 +17,14 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @SuperBuilder
-public abstract class BaseRelationalEntity {
+public abstract class BaseJoinEntity {
 
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.setCreatedAt(LocalDateTime.now());
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.setUpdatedAt(LocalDateTime.now());
-    }
 
 }

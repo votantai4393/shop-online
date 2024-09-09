@@ -15,15 +15,16 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public class Token extends BaseEntity {
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String code;
 
+    @Column(nullable = false)
     private LocalDateTime expiresAt;
 
     private LocalDateTime validatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @Transient

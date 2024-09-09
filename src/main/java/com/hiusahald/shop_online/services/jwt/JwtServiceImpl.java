@@ -25,7 +25,7 @@ public class JwtServiceImpl implements JwtService {
 
     @NonNull
     private SecretKey getSigningKey() {
-        var bytes = this.secretKey.getBytes();
+        byte[] bytes = this.secretKey.getBytes();
         return Keys.hmacShaKeyFor(
                 Base64.getEncoder().encode(bytes)
         );
@@ -33,8 +33,8 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateToken(@NonNull UserDetails userDetails, Map<String, Object> claims) {
-        var now = new Date();
-        var expires = new Date(now.getTime() + this.expiration);
+        Date now = new Date();
+        Date expires = new Date(now.getTime() + this.expiration);
         return Jwts.builder()
                 .signWith(this.getSigningKey())
                 .subject(userDetails.getUsername())

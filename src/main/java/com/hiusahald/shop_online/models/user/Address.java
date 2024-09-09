@@ -13,18 +13,22 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Address extends BaseEntity {
 
+    @Column(nullable = false)
     private String country;
 
+    @Column(nullable = false)
     private String city;
 
+    @Column(nullable = false)
     private String detail;
 
+    @Column(nullable = false)
     private String postalCode;
 
     private String department;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
 }

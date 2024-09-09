@@ -15,7 +15,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -67,7 +66,6 @@ public class EmailServiceImpl implements EmailService {
                     "username", props.username(),
                     "new_password", props.newPassword()
             );
-            default -> new HashMap<>();
         };
     }
 

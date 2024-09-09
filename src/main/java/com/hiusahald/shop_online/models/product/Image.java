@@ -13,11 +13,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Image extends BaseEntity {
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "productId")
+    @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
 }
