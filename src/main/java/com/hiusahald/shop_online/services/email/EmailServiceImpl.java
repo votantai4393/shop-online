@@ -66,6 +66,7 @@ public class EmailServiceImpl implements EmailService {
                     "username", props.username(),
                     "new_password", props.newPassword()
             );
+            case WAITING_PAYMENT -> null;
         };
     }
 

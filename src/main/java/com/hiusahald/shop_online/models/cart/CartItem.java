@@ -1,6 +1,6 @@
 package com.hiusahald.shop_online.models.cart;
 
-import com.hiusahald.shop_online.models.BaseJoinEntity;
+import com.hiusahald.shop_online.models.BaseAuditingEntity;
 import com.hiusahald.shop_online.models.product.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,12 +9,11 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "cartItems")
 @NoArgsConstructor
 @Getter
 @Setter
 @SuperBuilder
-public class CartItem extends BaseJoinEntity {
+public class CartItem extends BaseAuditingEntity {
 
     @EmbeddedId
     private CartItemId id;

@@ -41,7 +41,7 @@ public class User extends BaseEntity implements UserDetails {
 
     private boolean enabled;
 
-    private boolean banned;
+    private boolean locked;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -50,6 +50,9 @@ public class User extends BaseEntity implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "roleId")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart = new Cart();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Token> tokens = new HashSet<>();
@@ -61,16 +64,13 @@ public class User extends BaseEntity implements UserDetails {
     private Set<Order> orders = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Cart> carts = new HashSet<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Payment> payments = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.getRoles()
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toSet());
     }
 
@@ -81,7 +81,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !this.isBanned();
+        return !this.isLocked();
     }
 
     @Transient

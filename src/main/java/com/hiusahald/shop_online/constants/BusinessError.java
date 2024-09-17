@@ -2,19 +2,19 @@ package com.hiusahald.shop_online.constants;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
 public enum BusinessError {
 
-    NO_CODE(HttpStatus.NOT_IMPLEMENTED, "No code!"),
-    PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "Password doesn't match!"),
-    USER_EXISTED(HttpStatus.BAD_REQUEST, "Email has existed already!"),
-    ERROR_SERVER(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!"),
-    RESEND_EMAIL(HttpStatus.NOT_IMPLEMENTED, "An new email has been sent, please check your email!");
+    NO_CODE(1, "No code!"),
+    BAD_CREDENTIAL(2, "Email or password was incorrect!"),
+    LOCKED_ACCOUNT(3, "Account currently banned, please contact to admin to be supported!"),
+    DISABLE_ACCOUNT(4, "Account has not been activated, please check your email to activate account!"),
+    USER_EXISTED(5, "Email has existed already!"),
+    ERROR_SERVER(100, "Something went wrong!");
 
-    private final HttpStatus code;
+    private final int code;
     private final String message;
 
 }

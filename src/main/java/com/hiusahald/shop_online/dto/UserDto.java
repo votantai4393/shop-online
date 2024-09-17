@@ -1,11 +1,13 @@
 package com.hiusahald.shop_online.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
 public record UserDto(
         Long id,
         String firstname,
@@ -19,7 +21,7 @@ public record UserDto(
         Boolean isAdmin,
         Boolean enabled,
         Boolean banned,
-        LocalDateTime cratedAt,
+        LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
 }

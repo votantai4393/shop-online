@@ -11,7 +11,7 @@ public record PageResponse<T>(
         Integer pageSize,
         Long totalElement,
         Integer totalPage,
-        boolean isFirst,
-        boolean isLast
+        Boolean isFirst,
+        Boolean isLast
 ) {
 }

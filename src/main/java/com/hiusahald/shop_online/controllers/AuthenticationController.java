@@ -1,8 +1,8 @@
 package com.hiusahald.shop_online.controllers;
 
-import com.hiusahald.shop_online.dto.request.LoginForm;
-import com.hiusahald.shop_online.dto.request.RegisterForm;
-import com.hiusahald.shop_online.services.auth.AuthenticationResponse;
+import com.hiusahald.shop_online.dto.request.LoginRequest;
+import com.hiusahald.shop_online.dto.request.RegisterRequest;
+import com.hiusahald.shop_online.dto.response.AuthenticationResponse;
 import com.hiusahald.shop_online.services.auth.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,23 +16,18 @@ public class AuthenticationController {
 
     private final AuthenticationService authService;
 
-    @GetMapping
-    public ResponseEntity<?> testApi() {
-        return ResponseEntity.accepted().body("Hello world");
-    }
-
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterForm form) {
-        authService.register(form);
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
+        authService.register(request);
         return ResponseEntity.accepted().build();
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody @Valid LoginForm form) {
-        return ResponseEntity.ok(authService.authenticate(form));
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody @Valid LoginRequest request) {
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 
-    @PostMapping("/activate-account/{token}")
+    @PutMapping("/activate-account/{token}")
     public ResponseEntity<?> activateAccount(@PathVariable String token) {
         authService.activateAccount(token);
         return ResponseEntity.accepted().build();

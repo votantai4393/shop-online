@@ -9,6 +9,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -17,41 +18,40 @@ public class CorsConfig {
     @Value("${app.frontend.origin}")
     private String frontendOrigin;
 
-    @Value("${app.backend.origin}")
-    private String backendOrigin;
-
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedHeaders(this.getHeaders());
-        config.setAllowedMethods(this.getMethods());
-        config.setAllowedOrigins(this.getOrigins());
+        config.setAllowedHeaders(getHeaders());
+        config.setAllowedMethods(getMethods());
+        config.setAllowedOrigins(getOrigins());
         config.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 
     private List<String> getHeaders() {
-        return List.of(
-                HttpHeaders.ORIGIN,
-                HttpHeaders.CONTENT_TYPE,
-                HttpHeaders.AUTHORIZATION,
-                HttpHeaders.ACCEPT
-        );
+        List<String> list = new ArrayList<>();
+        list.add(HttpHeaders.ORIGIN);
+        list.add(HttpHeaders.CONTENT_TYPE);
+        list.add(HttpHeaders.AUTHORIZATION);
+        list.add(HttpHeaders.ACCEPT);
+        return list;
     }
 
     private List<String> getMethods() {
-        return List.of(
-                HttpMethod.GET.name(),
-                HttpMethod.POST.name(),
-                HttpMethod.PUT.name(),
-                HttpMethod.DELETE.name()
-        );
+        List<String> list = new ArrayList<>();
+        list.add(HttpMethod.GET.name());
+        list.add(HttpMethod.POST.name());
+        list.add(HttpMethod.PUT.name());
+        list.add(HttpMethod.DELETE.name());
+        return list;
     }
 
     private List<String> getOrigins() {
-        return List.of(this.frontendOrigin, this.backendOrigin);
+        List<String> list = new ArrayList<>();
+        list.add(frontendOrigin);
+        return list;
     }
 
 }

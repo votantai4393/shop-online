@@ -1,11 +1,13 @@
 package com.hiusahald.shop_online.util;
 
-import com.hiusahald.shop_online.dto.response.PageResponse;
-import org.springframework.data.domain.Page;
+import com.hiusahald.shop_online.constants.ROLE;
+import com.hiusahald.shop_online.exceptions.ResourceNotAvailableException;
+import com.hiusahald.shop_online.models.user.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.security.SecureRandom;
-import java.util.List;
-import java.util.function.Function;
+import java.util.Objects;
 
 public class CommonUtil {
 
@@ -34,18 +36,28 @@ public class CommonUtil {
         return arr;
     }
 
-    public static <T, R> PageResponse<R> toPageResponse(Page<T> page, Function<T, R> converter) {
-        List<R> list = page.stream()
-                .map(converter)
-                .toList();
-        return PageResponse.<R>builder()
-                .pageSize(page.getSize())
-                .pageNumber(page.getNumber())
-                .totalPage(page.getTotalPages())
-                .isFirst(page.isFirst())
-                .isLast(page.isLast())
-                .totalElement(page.getTotalElements())
-                .content(list)
-                .build();
+    public static boolean isAdmin(User user) {
+        return user.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(role -> role.equals(ROLE.ADMIN.name()));
     }
+
+    public static User getCurentUser(Authentication auth) {
+        return (User) auth.getPrincipal();
+    }
+
+    public static void validateAdminAccess(User currentUser) {
+        if (!isAdmin(currentUser)) {
+            throw new ResourceNotAvailableException("Not allowed to access this resource!");
+        }
+    }
+
+    public static void requireAdminAccess(Authentication auth) {
+        User currentUser = getCurentUser(auth);
+        if (!isAdmin(currentUser)) {
+            throw new ResourceNotAvailableException("Not allowed to access this resource!");
+        }
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.hiusahald.shop_online.config;
 
-import com.hiusahald.shop_online.repositories.UserRepository;
-import lombok.NonNull;
+import com.hiusahald.shop_online.models.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +21,8 @@ public class AuthenticationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return email -> this.userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Email not found!"));
+        return email -> userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Email not found! id: " + email));
     }
 
     @Bean
@@ -41,7 +40,7 @@ public class AuthenticationConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(
-            @NonNull AuthenticationConfiguration config) throws Exception {
+            AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 

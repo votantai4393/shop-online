@@ -1,10 +1,8 @@
 package com.hiusahald.shop_online.models.user;
 
+import com.hiusahald.shop_online.constants.ROLE;
 import com.hiusahald.shop_online.models.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +20,8 @@ import java.util.Set;
 public class Role extends BaseEntity {
 
     @Column(unique = true, nullable = false)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private ROLE name;
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();

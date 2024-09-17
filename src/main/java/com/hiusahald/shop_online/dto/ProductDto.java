@@ -1,22 +1,23 @@
 package com.hiusahald.shop_online.dto;
 
-import com.hiusahald.shop_online.dto.request.CategoryDto;
-import com.hiusahald.shop_online.models.order.OrderItem;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record ProductDto(
         Long id,
         String name,
         Double price,
         String description,
         Integer inventory,
-        ImageDto thumbnail,
         CategoryDto category,
-        Set<ImageDto> images,
-        Set<OrderItem> orderItems,
-        Set<CartItemDto> cartItems,
+        String thumbnailUrl,
+        List<String> imageUrls,
+        Integer sold,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

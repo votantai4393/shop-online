@@ -1,5 +1,6 @@
 package com.hiusahald.shop_online.models.order;
 
+import com.hiusahald.shop_online.constants.OrderStatus;
 import com.hiusahald.shop_online.models.BaseEntity;
 import com.hiusahald.shop_online.models.user.User;
 import jakarta.persistence.*;
@@ -27,9 +28,10 @@ public class Order extends BaseEntity {
     private Payment payment;
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderItem> orderItems = new HashSet<>();
+    private Set<OrderItem> items = new HashSet<>();
 
 }

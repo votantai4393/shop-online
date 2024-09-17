@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -48,7 +48,9 @@ app:
     activate-account:
       redirect-url: localhost:3000/activate-account
       token-length: 6
-      token-expiration: 900000
+      token-expiration: 15 # in minutes
+    waiting-payment:
+      redirect-url: localhost:3000/payment
   security:
     jwt:
       expiration: 86400000

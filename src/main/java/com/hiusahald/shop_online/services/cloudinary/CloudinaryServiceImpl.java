@@ -1,7 +1,8 @@
 package com.hiusahald.shop_online.services.cloudinary;
 
 import com.cloudinary.Cloudinary;
-import com.hiusahald.shop_online.exceptions.FileUploadException;
+import com.hiusahald.shop_online.dto.response.UploadResponse;
+import com.hiusahald.shop_online.exceptions.FileUploadingException;
 import com.hiusahald.shop_online.util.CommonUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
 
     @Override
     @Async
-    public CompletableFuture<UploadResponse> upload(@NonNull MultipartFile file) {
+    public UploadResponse upload(@NonNull MultipartFile file) {
         try {
             Map<String, Object> properties = new HashMap<>();
             String filename = UUID.randomUUID().toString();
@@ -31,16 +31,15 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             properties.put("overwrite", true);
             Map<?, ?> uploader = this.cloudinary.uploader()
                     .upload(file.getBytes(), properties);
-            UploadResponse response = UploadResponse.builder()
+            return UploadResponse.builder()
                     .secureUrl(uploader.get("secure_url").toString())
                     .format(uploader.get("format").toString())
                     .originalFilename(uploader.get("original_filename").toString())
                     .publicId(uploader.get("public_id").toString())
                     .resourceType(uploader.get("resource_type").toString())
                     .build();
-            return CompletableFuture.completedFuture(response);
         } catch (IOException e) {
-            throw new FileUploadException("Cannot upload file!", e);
+            throw new FileUploadingException("Cannot upload file!", e);
         }
     }
 
@@ -51,7 +50,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             this.cloudinary.uploader()
                     .destroy(publicId, new HashMap<>());
         } catch (IOException e) {
-            throw new FileUploadException("Cannot delete file!", e);
+            throw new FileUploadingException("Cannot delete file!", e);
         }
     }
 

@@ -1,13 +1,14 @@
 package com.hiusahald.shop_online.services.auth;
 
-import com.hiusahald.shop_online.dto.request.LoginForm;
-import com.hiusahald.shop_online.dto.request.RegisterForm;
+import com.hiusahald.shop_online.dto.response.AuthenticationResponse;
+import com.hiusahald.shop_online.dto.request.LoginRequest;
+import com.hiusahald.shop_online.dto.request.RegisterRequest;
 
 public interface AuthenticationService {
 
-    void register(RegisterForm form);
+    void register(RegisterRequest request);
 
-    AuthenticationResponse authenticate(LoginForm form);
+    AuthenticationResponse authenticate(LoginRequest request);
 
     void activateAccount(String token);
 

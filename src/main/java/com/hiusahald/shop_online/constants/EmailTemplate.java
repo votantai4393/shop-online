@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 public enum EmailTemplate {
 
     ACTIVATE_ACCOUNT("activate_account", "activate your account now!"),
-    RESET_PASSWORD("reset_password", "Your password has reset successfully!");
-
+    RESET_PASSWORD("reset_password", "Your password has reset successfully!"),
+    WAITING_PAYMENT("waiting_payment", "Your order almost successfully, Payment now!");
+    
     private final String template;
     private final String subject;
 
